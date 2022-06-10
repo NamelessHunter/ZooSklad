@@ -1,0 +1,65 @@
+﻿<Window x:Class="ZooSklad.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ZooSklad" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="ЗооСклад" Height="600" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBox Width="300" Height="29" Text="{Binding TextFilter,UpdateSourceTrigger=PropertyChanged}" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <i:InvokeCommandAction Command="{Binding FilterText}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+        <DataGrid SelectedItem="{Binding SelectedItem}" x:Name="MainDataGrid" ItemsSource="{Binding DemoList}" HorizontalAlignment="Stretch" Height="auto" VerticalAlignment="Stretch" Width="auto" Margin="10" AutoGenerateColumns="False" ColumnWidth="*" Grid.Row="1" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding ID, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Артикул" Binding="{Binding Article, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Название" Binding="{Binding Title, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Количество" Binding="{Binding Amount, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Еденица измерения" Binding="{Binding Unit, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Цена последней поставки" Binding="{Binding Wholesale, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridTextColumn Header="Цена последенего перемещения" Binding="{Binding Retail, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}" />
+                <DataGridCheckBoxColumn Header="На складе" Binding="{Binding InStock, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Добавить" x:Name="AddButton" Command="{Binding Add}" HorizontalAlignment="Left" Margin="11,44,0,0" VerticalAlignment="Top" Width="75" Click="AddButton_Click"/>
+        <Button Content="Изменить" x:Name="EditButton" Command="{Binding Edit}" HorizontalAlignment="Left" Margin="91,44,0,0" VerticalAlignment="Top" Width="75" Click="EditButton_Click"/>
+        <Button Content="Удалить" x:Name="DeleteButton" Command="{Binding Delete}" HorizontalAlignment="Left" Margin="171,44,0,0" VerticalAlignment="Top" Width="75" Click="DeleteButton_Click"/>
+        <GroupBox Header="" HorizontalAlignment="Left" Height="60" Margin="315,0,0,0" VerticalAlignment="Top" Width="127">
+            <StackPanel>
+                <CheckBox x:Name="checkNone" Content="Отсутствует" Margin="2" IsChecked="{Binding NoneAmount}" Checked="CheckBox_Checked">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Checked">
+                            <i:InvokeCommandAction Command="{Binding NoneAmountCommand}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Unchecked">
+                            <i:InvokeCommandAction Command="{Binding NoneAmountCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </CheckBox>
+                <CheckBox x:Name="checkMin" Content="Мин. отстаток" Margin="2" IsChecked="{Binding MinAmount}" Checked="checkMin_Checked">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="Checked">
+                            <i:InvokeCommandAction Command="{Binding MinAmountCommand}"/>
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="Unchecked">
+                            <i:InvokeCommandAction Command="{Binding MinAmountCommand}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </CheckBox>
+            </StackPanel>
+        </GroupBox>
+        
+        <Button Content="Заказ поставщику" x:Name="SuppOrderButton_Copy" Command="{Binding SuppOrder}" HorizontalAlignment="Left" Margin="472,10,0,0" VerticalAlignment="Top" Width="120" Click="SuppOrderButton_Click"/>
+
+
+    </Grid>
+</Window>
